@@ -34,7 +34,7 @@ The design is inspired by the Nimbus dashboard design system, featuring:
 
 ## 🚀 Live Site
 
-Visit the live website: **[https://beyondsightgroup.github.io/bs-website](https://beyondsightgroup.github.io/bs-website)**
+Visit the live website: **[https://beyondsightgroup.com](https://beyondsightgroup.com)**
 
 ## 🛠 Tech Stack
 
@@ -197,7 +197,7 @@ This project is proprietary to Beyond Sight Group. All rights reserved.
 For questions about this website or Beyond Sight Group:
 
 - **Email**: hello@beyondsightgroup.com
-- **Website**: [https://beyondsightgroup.github.io/bs-website](https://beyondsightgroup.github.io/bs-website)
+- **Website**: [https://beyondsightgroup.com](https://beyondsightgroup.com)
 
 ---
 
