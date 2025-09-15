@@ -14,7 +14,7 @@
     <meta name="twitter:description" content="Something extraordinary is coming soon. Join us as we redefine what's possible.">
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://7ee8e2f2.sibforms.com; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:; frame-src https://7ee8e2f2.sibforms.com; frame-ancestors 'none';")
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -39,19 +39,7 @@
             <p class="tagline">Coming Soon</p>
             
             <div class="cta-section">
-                <form class="email-form" id="emailForm" aria-label="Email notification signup">
-                    <input 
-                        type="email" 
-                        class="email-input" 
-                        placeholder="Enter your email for updates" 
-                        required 
-                        aria-label="Email address"
-                        id="emailInput"
-                    >
-                    <button type="submit" class="submit-btn" aria-label="Notify Me">
-                        Notify Me
-                    </button>
-                </form>
+                <iframe width="540" height="305" src="https://7ee8e2f2.sibforms.com/serve/MUIFAAwyuo786kklwnwknr-mhnghB2Tc4SACzwo0JBiUr7hoindTqqkv8k6uyG8T-4h2XdNfjCPlY-tsV7nYyGA_b9Dq5tNy4KO7P7BWhF3DnKhz-8JjzbU-SlQaowB0VoAxZk6UW0xIDCNLDyQoyHMfthhvoVrZQ9aXF-uTx_RViiNaEGylxtOENxkmhKbnuAEf9cVYxu2KgXi4" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
             </div>
             
             <div class="social-links">
@@ -79,39 +67,6 @@
     </div>
 
     <script>
-        // Email form handling with basic client-side validation
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const emailInput = document.getElementById('emailInput');
-            const email = emailInput.value.trim();
-            const submitBtn = e.target.querySelector('.submit-btn');
-            
-            // Basic email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            
-            // Simulate form submission
-            submitBtn.textContent = 'Subscribing...';
-            submitBtn.disabled = true;
-            
-            // In a real implementation, you would send this to your backend
-            setTimeout(() => {
-                submitBtn.textContent = 'Subscribed!';
-                submitBtn.style.background = 'linear-gradient(135deg, #6ee7b7, #10b981)';
-                emailInput.value = '';
-                
-                // Reset after 3 seconds
-                setTimeout(() => {
-                    submitBtn.textContent = 'Notify Me';
-                    submitBtn.disabled = false;
-                    submitBtn.style.background = 'linear-gradient(135deg, var(--accent), var(--accent-2))';
-                }, 3000);
-            }, 1500);
-        });
         
         // Social link event tracking (placeholder for analytics)
         document.querySelectorAll('.social-link').forEach(link => {
