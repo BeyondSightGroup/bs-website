@@ -1,0 +1,184 @@
+---
+import RevealOnScroll from "../primitives/RevealOnScroll.astro";
+import MockupFrame from "../primitives/MockupFrame.astro";
+
+const apps = [
+  {
+    id: "console",
+    name: "Console",
+    tagline: "Operate the network.",
+    body: "Real-time monitoring of Gun.js peers, Tor circuits and MinIO buckets. Roles, audit logs and platform config in one place.",
+    accent: "accent",
+  },
+  {
+    id: "horizon",
+    name: "Horizon",
+    tagline: "Collaborate, securely.",
+    body: "Role-aware dashboards for cases, files and conversations. Passphrase rotation and keychain backup are first-class.",
+    accent: "accent-2",
+  },
+  {
+    id: "orion",
+    name: "Orion",
+    tagline: "Pocket-sized resilience.",
+    body: "An offline-first PWA. Encrypted IndexedDB + OPFS keep you working anywhere; edits sync the moment a circuit comes back up.",
+    accent: "accent",
+  },
+];
+---
+
+<section
+  id="apps"
+  class="relative mx-auto max-w-7xl scroll-mt-20 px-6 py-24 sm:py-32"
+>
+  <RevealOnScroll class="mx-auto max-w-2xl text-center">
+    <p class="text-sm font-medium uppercase tracking-[0.18em] text-accent">
+      Three apps · one network
+    </p>
+    <h2 class="mt-3 text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+      Pick the surface that fits the moment.
+    </h2>
+  </RevealOnScroll>
+
+  <div class="mt-12">
+    <div
+      role="tablist"
+      aria-label="Nimbus applications"
+      class="relative mx-auto flex max-w-md items-center justify-between rounded-full border border-border bg-panel/60 p-1"
+    >
+      <span
+        id="app-tab-indicator"
+        class="absolute left-1 top-1 h-[calc(100%-0.5rem)] w-[calc(33.333%-0.25rem)] rounded-full bg-accent/15 ring-1 ring-inset ring-accent/30 transition-transform duration-300 ease-out"
+        aria-hidden="true"
+      >
+      </span>
+      {
+        apps.map((app, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`app-tab-${app.id}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            aria-controls={`app-panel-${app.id}`}
+            data-app-tab={app.id}
+            data-index={i}
+            class="relative z-10 flex-1 rounded-full px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-text aria-selected:text-text"
+          >
+            {app.name}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="relative mt-12">
+      {
+        apps.map((app, i) => (
+          <div
+            role="tabpanel"
+            id={`app-panel-${app.id}`}
+            aria-labelledby={`app-tab-${app.id}`}
+            data-app-panel={app.id}
+            data-index={i}
+            class="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]"
+            style={i === 0 ? "" : "display:none;"}
+          >
+            <div>
+              <p
+                class={
+                  app.accent === "accent"
+                    ? "text-sm font-medium uppercase tracking-[0.18em] text-accent"
+                    : "text-sm font-medium uppercase tracking-[0.18em] text-accent-2"
+                }
+              >
+                {app.name}
+              </p>
+              <h3 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+                {app.tagline}
+              </h3>
+              <p class="mt-4 max-w-lg text-base leading-relaxed text-muted">
+                {app.body}
+              </p>
+            </div>
+
+            <div class="relative flex items-center justify-center gap-6">
+              <MockupFrame variant="desktop" title={`nimbus / ${app.id}`} class="flex-1">
+                <div class="flex h-64 flex-col gap-3 p-5">
+                  <div class="flex items-center gap-2">
+                    <span class="h-2 w-24 rounded-full bg-border" />
+                    <span class="ml-auto h-2 w-2 rounded-full bg-accent-2" />
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    {Array.from({ length: 6 }).map(() => (
+                      <div class="rounded-md border border-border bg-panel-2/60 p-3">
+                        <span class="block h-1.5 w-10 rounded-full bg-border" />
+                        <span class="mt-2 block h-3 w-14 rounded-md bg-border/70" />
+                      </div>
+                    ))}
+                  </div>
+                  <div class="mt-auto flex items-center gap-2">
+                    <span class="h-1.5 flex-1 rounded-full bg-border" />
+                    <span class="h-1.5 w-12 rounded-full bg-accent/60" />
+                  </div>
+                </div>
+              </MockupFrame>
+              <MockupFrame variant="mobile" class="hidden sm:block sm:w-44">
+                <div class="flex h-72 flex-col gap-2 p-3">
+                  <div class="h-2 w-16 rounded-full bg-border" />
+                  {Array.from({ length: 4 }).map(() => (
+                    <div class="rounded-md border border-border bg-panel/70 p-2">
+                      <span class="block h-1.5 w-12 rounded-full bg-border" />
+                      <span class="mt-1.5 block h-2 w-20 rounded-md bg-border/70" />
+                    </div>
+                  ))}
+                  <div class="mt-auto flex justify-around border-t border-border pt-2">
+                    <span class="h-2 w-2 rounded-full bg-accent" />
+                    <span class="h-2 w-2 rounded-full bg-border" />
+                    <span class="h-2 w-2 rounded-full bg-border" />
+                  </div>
+                </div>
+              </MockupFrame>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-app-tab]")
+  );
+  const panels = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-app-panel]")
+  );
+  const indicator = document.getElementById("app-tab-indicator");
+  if (tabs.length && panels.length && indicator) {
+    let active = 0;
+    let timer: number | undefined;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const setActive = (next: number) => {
+      active = next % tabs.length;
+      tabs.forEach((t, i) =>
+        t.setAttribute("aria-selected", i === active ? "true" : "false")
+      );
+      panels.forEach((p, i) => {
+        p.style.display = i === active ? "" : "none";
+      });
+      indicator.style.transform = `translateX(${active * 100}%)`;
+    };
+
+    tabs.forEach((tab, i) =>
+      tab.addEventListener("click", () => {
+        setActive(i);
+        if (timer) window.clearInterval(timer);
+        if (!reduced) timer = window.setInterval(() => setActive(active + 1), 6000);
+      })
+    );
+
+    setActive(0);
+    if (!reduced) timer = window.setInterval(() => setActive(active + 1), 6000);
+  }
+</script>

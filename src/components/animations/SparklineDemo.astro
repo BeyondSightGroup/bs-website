@@ -1,0 +1,142 @@
+---
+
+---
+
+<div
+  class="flex h-72 flex-col justify-between rounded-xl bg-panel-2/80 p-5"
+  data-spark-root
+>
+  <div>
+    <p class="text-xs uppercase tracking-[0.18em] text-muted">Throughput · 24h</p>
+    <p class="mt-2 flex items-baseline gap-2">
+      <span class="text-2xl font-semibold tracking-tight" data-spark-value>0</span>
+      <span class="text-xs text-accent-2">+18.2%</span>
+    </p>
+  </div>
+
+  <svg
+    viewBox="0 0 220 80"
+    class="h-28 w-full"
+    fill="none"
+    aria-hidden="true"
+  >
+    <defs>
+      <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#59c2ff" stop-opacity="0.35" />
+        <stop offset="100%" stop-color="#59c2ff" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M0 60 L20 52 L40 56 L60 40 L80 44 L100 28 L120 36 L140 22 L160 30 L180 14 L200 22 L220 8"
+      stroke="#59c2ff"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      data-spark-line
+    >
+    </path>
+    <path
+      d="M0 60 L20 52 L40 56 L60 40 L80 44 L100 28 L120 36 L140 22 L160 30 L180 14 L200 22 L220 8 L220 80 L0 80 Z"
+      fill="url(#sparkFill)"
+      opacity="0"
+      data-spark-area
+    >
+    </path>
+  </svg>
+
+  <div class="grid grid-cols-3 gap-2 text-[11px] text-muted">
+    <div class="rounded border border-border bg-panel/50 px-2 py-1.5">
+      <span class="block text-[10px] uppercase tracking-widest">Peers</span>
+      <span class="font-mono text-text">142</span>
+    </div>
+    <div class="rounded border border-border bg-panel/50 px-2 py-1.5">
+      <span class="block text-[10px] uppercase tracking-widest">Buckets</span>
+      <span class="font-mono text-text">12</span>
+    </div>
+    <div class="rounded border border-border bg-panel/50 px-2 py-1.5">
+      <span class="block text-[10px] uppercase tracking-widest">Latency</span>
+      <span class="font-mono text-text">38ms</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { loadAnime, prefersReducedMotion } from "../../lib/anime";
+
+  const root = document.querySelector<HTMLElement>("[data-spark-root]");
+  if (root) {
+    const line = root.querySelector<SVGPathElement>("[data-spark-line]");
+    const area = root.querySelector<SVGPathElement>("[data-spark-area]");
+    const value = root.querySelector<HTMLElement>("[data-spark-value]");
+    if (line && area && value) {
+      const length = line.getTotalLength();
+      line.style.strokeDasharray = `${length}`;
+      line.style.strokeDashoffset = `${length}`;
+
+      if (prefersReducedMotion()) {
+        line.style.strokeDashoffset = "0";
+        area.style.opacity = "1";
+        value.textContent = "1,284";
+      } else {
+      const io = new IntersectionObserver(
+        async (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            io.disconnect();
+            const anime = await loadAnime();
+
+            const cycle = () => {
+              const tl = anime.timeline({
+                complete: () => window.setTimeout(cycle, 2000),
+              });
+              tl.add({
+                targets: line,
+                strokeDashoffset: [length, 0],
+                duration: 1500,
+                easing: "easeInOutSine",
+              })
+                .add(
+                  {
+                    targets: area,
+                    opacity: [0, 1],
+                    duration: 700,
+                    easing: "easeOutQuad",
+                  },
+                  "-=600"
+                )
+                .add(
+                  {
+                    targets: { v: 0 },
+                    v: 1284,
+                    round: 1,
+                    duration: 1300,
+                    easing: "easeOutQuad",
+                    update: (a: any) => {
+                      value.textContent = Math.round(a.animations[0].currentValue).toLocaleString();
+                    },
+                  },
+                  "-=1200"
+                )
+                .add({
+                  targets: [line, area],
+                  opacity: [1, 0],
+                  duration: 600,
+                  delay: 1200,
+                  easing: "easeInQuad",
+                  complete: () => {
+                    line.style.strokeDashoffset = `${length}`;
+                    line.style.opacity = "1";
+                    area.style.opacity = "0";
+                  },
+                });
+            };
+            cycle();
+          }
+        },
+        { threshold: 0.4 }
+      );
+      io.observe(root);
+      }
+    }
+  }
+</script>

@@ -1,0 +1,45 @@
+---
+import RevealOnScroll from "../primitives/RevealOnScroll.astro";
+import GradientGlow from "../primitives/GradientGlow.astro";
+
+const brevoSrc =
+  "https://7ee8e2f2.sibforms.com/serve/MUIFAAwyuo786kklwnwknr-mhnghB2Tc4SACzwo0JBiUr7hoindTqqkv8k6uyG8T-4h2XdNfjCPlY-tsV7nYyGA_b9Dq5tNy4KO7P7BWhF3DnKhz-8JjzbU-SlQaowB0VoAxZk6UW0xIDCNLDyQoyHMfthhvoVrZQ9aXF-uTx_RViiNaEGylxtOENxkmhKbnuAEf9cVYxu2KgXi4";
+---
+
+<section
+  id="waitlist"
+  class="relative isolate overflow-hidden px-6 py-24 sm:py-32"
+>
+  <GradientGlow
+    color="accent"
+    size="lg"
+    position="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+  />
+
+  <RevealOnScroll class="relative mx-auto max-w-3xl">
+    <div
+      class="panel-card glow-accent relative overflow-hidden p-8 text-center sm:p-12"
+    >
+      <h2 class="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+        Be first on the network.
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted">
+        Nimbus is in early beta. Join the waitlist to get an invite when we open
+        access — no spam, just product updates.
+      </p>
+
+      <div class="mt-8 flex justify-center">
+        <iframe
+          width="540"
+          height="305"
+          src={brevoSrc}
+          frameborder="0"
+          scrolling="auto"
+          allowfullscreen
+          title="Nimbus waitlist signup"
+          class="block w-full max-w-[540px] rounded-xl"
+          style="display: block;"></iframe>
+      </div>
+    </div>
+  </RevealOnScroll>
+</section>

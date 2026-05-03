@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0b0f17;
+  --color-panel: #111826;
+  --color-panel-2: #0d1420;
+  --color-text: #e6edf3;
+  --color-muted: #9fb0c0;
+  --color-accent: #59c2ff;
+  --color-accent-2: #6ee7b7;
+  --color-warn: #f59e0b;
+  --color-danger: #ef4444;
+  --color-border: #1f2a3a;
+  --color-chip: #192335;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Inter, "Segoe UI Variable", "SF Pro", Arial, sans-serif;
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background:
+    radial-gradient(1200px 800px at 70% 10%, #0f1626 0%, var(--color-bg) 60%),
+    var(--color-bg);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+@utility bg-radial-hero {
+  background: radial-gradient(
+    1200px 800px at 70% 10%,
+    #0f1626 0%,
+    var(--color-bg) 60%
+  );
+}
+
+@utility glow-accent {
+  box-shadow: 0 0 60px -10px color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+@utility glow-accent-2 {
+  box-shadow: 0 0 60px -10px color-mix(in srgb, var(--color-accent-2) 35%, transparent);
+}
+
+@utility panel-card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

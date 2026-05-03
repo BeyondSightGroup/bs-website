@@ -1,0 +1,29 @@
+---
+interface Props {
+  color?: "accent" | "accent-2";
+  size?: "sm" | "md" | "lg";
+  position?: string;
+  class?: string;
+}
+
+const {
+  color = "accent",
+  size = "md",
+  position = "top-0 right-0",
+  class: className = "",
+} = Astro.props;
+
+const sizeClass = {
+  sm: "h-64 w-64",
+  md: "h-96 w-96",
+  lg: "h-[32rem] w-[32rem]",
+}[size];
+
+const colorClass = color === "accent" ? "bg-accent/20" : "bg-accent-2/20";
+---
+
+<div
+  aria-hidden="true"
+  class={`pointer-events-none absolute ${position} ${sizeClass} rounded-full ${colorClass} blur-3xl ${className}`}
+>
+</div>

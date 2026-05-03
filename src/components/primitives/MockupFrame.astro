@@ -1,0 +1,46 @@
+---
+interface Props {
+  variant?: "desktop" | "mobile";
+  title?: string;
+  class?: string;
+}
+
+const {
+  variant = "desktop",
+  title = "",
+  class: className = "",
+} = Astro.props;
+---
+
+{
+  variant === "desktop" ? (
+    <div
+      class={`overflow-hidden rounded-2xl border border-border bg-panel shadow-2xl shadow-black/40 ${className}`}
+    >
+      <div class="flex items-center gap-2 border-b border-border bg-panel-2 px-4 py-2.5">
+        <span class="h-2.5 w-2.5 rounded-full bg-danger/70" />
+        <span class="h-2.5 w-2.5 rounded-full bg-warn/70" />
+        <span class="h-2.5 w-2.5 rounded-full bg-accent-2/70" />
+        {title && (
+          <span class="ml-3 text-xs font-medium tracking-wide text-muted">
+            {title}
+          </span>
+        )}
+      </div>
+      <div class="bg-panel">
+        <slot />
+      </div>
+    </div>
+  ) : (
+    <div
+      class={`mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border border-border bg-panel p-2 shadow-2xl shadow-black/40 ${className}`}
+    >
+      <div class="relative overflow-hidden rounded-[1.5rem] bg-panel-2">
+        <div class="absolute left-1/2 top-2 h-4 w-20 -translate-x-1/2 rounded-full bg-bg" />
+        <div class="pt-8">
+          <slot />
+        </div>
+      </div>
+    </div>
+  )
+}
