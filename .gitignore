@@ -10,6 +10,7 @@ Thumbs.db
 # IDE and Editor Files
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
@@ -23,6 +24,7 @@ yarn-error.log*
 # Build outputs
 dist/
 build/
+.astro/
 
 # Environment variables
 .env

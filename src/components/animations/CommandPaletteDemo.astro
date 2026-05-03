@@ -1,0 +1,162 @@
+---
+const results = [
+  { glyph: "⌘", label: "Open Console", hint: "Cmd K" },
+  { glyph: "⇪", label: "Switch role…", hint: "Cmd ." },
+  { glyph: "🔒", label: "Rotate passphrase", hint: "Cmd P" },
+  { glyph: "⤓", label: "Export keychain", hint: "Cmd E" },
+];
+---
+
+<div
+  class="relative h-72 overflow-hidden rounded-xl bg-panel-2/80"
+  data-cmdp-root
+>
+  <div class="grid h-full grid-cols-3 gap-1 p-3 opacity-50">
+    {
+      Array.from({ length: 9 }).map(() => (
+        <div class="rounded bg-border/30" />
+      ))
+    }
+  </div>
+
+  <div
+    class="absolute inset-0 bg-bg/60 opacity-0 backdrop-blur-sm"
+    data-cmdp-backdrop
+  >
+  </div>
+
+  <div
+    class="absolute left-1/2 top-1/2 w-[88%] -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0"
+    data-cmdp-dialog
+    style="will-change: transform, opacity;"
+  >
+    <div
+      class="overflow-hidden rounded-xl border border-border bg-panel shadow-2xl shadow-black/40"
+    >
+      <div class="flex items-center gap-2 border-b border-border px-3 py-2">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="text-muted"
+          aria-hidden="true"
+          ><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"
+          ></path></svg
+        >
+        <span class="text-xs text-muted">Search commands…</span>
+        <span
+          class="ml-auto rounded border border-border bg-bg px-1.5 py-0.5 font-mono text-[10px] text-muted"
+          >⌘K</span
+        >
+      </div>
+      <ul class="divide-y divide-border/40">
+        {
+          results.map((r) => (
+            <li
+              class="flex items-center gap-3 px-3 py-2 text-xs"
+              data-cmdp-row
+              style="opacity:0; transform: translateY(8px);"
+            >
+              <span class="flex h-6 w-6 items-center justify-center rounded bg-accent/10 text-[11px] text-accent ring-1 ring-inset ring-accent/30">
+                {r.glyph}
+              </span>
+              <span class="text-text">{r.label}</span>
+              <span class="ml-auto rounded border border-border bg-bg px-1.5 py-0.5 font-mono text-[10px] text-muted">
+                {r.hint}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { loadAnime, prefersReducedMotion } from "../../lib/anime";
+
+  const root = document.querySelector<HTMLElement>("[data-cmdp-root]");
+  if (!root) {
+    /* no-op */
+  } else if (prefersReducedMotion()) {
+    root.querySelector<HTMLElement>("[data-cmdp-backdrop]")!.style.opacity = "1";
+    const dlg = root.querySelector<HTMLElement>("[data-cmdp-dialog]")!;
+    dlg.style.opacity = "1";
+    dlg.style.transform = "translate(-50%, -50%) scale(1)";
+    root
+      .querySelectorAll<HTMLElement>("[data-cmdp-row]")
+      .forEach((r) => ((r.style.opacity = "1"), (r.style.transform = "none")));
+  } else {
+    const io = new IntersectionObserver(
+      async (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          io.disconnect();
+          const anime = await loadAnime();
+          const backdrop = root.querySelector("[data-cmdp-backdrop]");
+          const dialog = root.querySelector("[data-cmdp-dialog]");
+          const rows = root.querySelectorAll("[data-cmdp-row]");
+
+          const cycle = () => {
+            const tl = anime.timeline({
+              easing: "easeOutCubic",
+              complete: () => {
+                window.setTimeout(cycle, 1200);
+              },
+            });
+            tl.add({ targets: backdrop, opacity: [0, 1], duration: 220 })
+              .add(
+                {
+                  targets: dialog,
+                  opacity: [0, 1],
+                  scale: [0.95, 1],
+                  duration: 320,
+                  easing: "easeOutBack",
+                },
+                "-=80"
+              )
+              .add(
+                {
+                  targets: rows,
+                  opacity: [0, 1],
+                  translateY: [8, 0],
+                  duration: 260,
+                  delay: anime.stagger(50),
+                },
+                "-=160"
+              )
+              .add({
+                targets: [backdrop, dialog, ...Array.from(rows)],
+                opacity: 0,
+                duration: 280,
+                delay: 1600,
+                easing: "easeInQuad",
+              })
+              .add(
+                {
+                  targets: dialog,
+                  scale: [1, 0.95],
+                  duration: 280,
+                },
+                "-=280"
+              )
+              .add(
+                {
+                  targets: rows,
+                  translateY: [0, 8],
+                  duration: 1,
+                },
+                "+=10"
+              );
+          };
+          cycle();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(root);
+  }
+</script>
